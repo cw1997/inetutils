@@ -38,6 +38,6 @@ typedef struct {
 //    uint8_t body[];
 //} icmp_t;
 
-uint8_t* build_icmp_packet(uint8_t type, uint8_t code, uint16_t identifier, uint16_t sequence_number, uint8_t* body, uint16_t body_length);
+uint8_t* build_icmp_packet(uint8_t type, uint8_t code, uint16_t identifier, uint16_t sequence_number, void* body, uint16_t body_length);
 
 #endif //PING_C_ICMP_H
