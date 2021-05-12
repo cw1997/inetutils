@@ -68,7 +68,7 @@ int recv_echo_reply(const int sock, const int identifier, const char* host, cons
     return 0;
 }
 
-int ping(const char *host, const uint32_t count, const uint32_t timeout) {
+int ping(const char *host, const uint32_t count, const uint32_t timeout, const uint16_t ttl) {
     char* address = host;
     printf("PING %s (%s) %d bytes of data.\n", host, address, 64);
 
@@ -98,6 +98,13 @@ int ping(const char *host, const uint32_t count, const uint32_t timeout) {
     int ret = setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
     if (ret == -1) {
         perror("set socket timeout option error.\n");
+        return -1;
+    }
+
+
+    ret = setsockopt(sock, IPPROTO_IP,IP_TTL, (char *)&ttl, sizeof(ttl));
+    if (ret == -1) {
+        perror("set socket TTL option error.\n");
         return -1;
     }
 

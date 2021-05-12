@@ -11,6 +11,6 @@
 
 uint64_t get_timestamp_us();
 
-ping(const char *host, uint32_t count, uint32_t timeout);
+ping(const char *host, uint32_t count, uint32_t timeout, uint16_t ttl);
 
 #endif //PING_C_PING_H
