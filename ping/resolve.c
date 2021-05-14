@@ -22,7 +22,7 @@ char* address2str(char* address) {
 char* get_ip_by_name(const char* name) {
     struct hostent *host = gethostbyname(name);
     if (host == NULL) {
-        perror("gethostbyname error");
+        printf("gethostbyname error.\n");
     }
     char* ip = address2str(host->h_addr);
     return ip;

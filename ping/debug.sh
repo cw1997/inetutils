@@ -1,1 +1,1 @@
-bash ./build.sh && sudo ./build/ping 8.8.8.8;
+./build.sh && sudo ./build/ping google.com -n 2 -l 1024 -i 128

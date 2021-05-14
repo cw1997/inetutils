@@ -110,7 +110,7 @@ int ping(const char *ip, const char *name, uint32_t count, uint32_t timeout, uin
     }
 
     if (ttl > 0) {
-        ret = setsockopt(sock, IPPROTO_IP,IP_TTL, &ttl, sizeof(ttl));
+        ret = setsockopt(sock, IPPROTO_IP,IP_TTL, (char *)&ttl, sizeof(ttl));
         if (ret == -1) {
             perror("set socket TTL option error.\n");
             return -1;
@@ -123,7 +123,7 @@ int ping(const char *ip, const char *name, uint32_t count, uint32_t timeout, uin
     char body[body_length];
 
     uint16_t identifier = getpid();
-    for (uint16_t sequence_number = 1; sequence_number <= count; ++sequence_number) {
+    for (uint32_t sequence_number = 1; sequence_number <= count; ++sequence_number) {
         ret = send_echo_request(sock, &addr, identifier, sequence_number, body, body_length);
         if (ret == -1) {
             perror("send failed.\n");
