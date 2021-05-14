@@ -2,8 +2,8 @@
 // Created by cw1997 on 2021/5/9.
 //
 
-#ifndef PING_C_PING_H
-#define PING_C_PING_H
+#ifndef COMMON_ICMP_ECHO_H
+#define COMMON_ICMP_ECHO_H
 
 #include <stdint.h>
 
@@ -13,4 +13,4 @@ uint64_t get_timestamp_us();
 
 int ping(const char *ip, const char *name, uint32_t count, uint32_t timeout, uint16_t ttl, uint16_t body_length);
 
-#endif //PING_C_PING_H
+#endif //COMMON_ICMP_ECHO_H

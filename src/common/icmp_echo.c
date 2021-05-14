@@ -11,7 +11,7 @@
 #include <netdb.h>
 #include <stdlib.h>
 
-#include "ping.h"
+#include "icmp_echo.h"
 
 #include "ip.h"
 #include "icmp.h"

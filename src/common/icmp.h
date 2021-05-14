@@ -2,8 +2,8 @@
 // Created by cw1997 on 2021/5/10.
 //
 
-#ifndef PING_C_ICMP_H
-#define PING_C_ICMP_H
+#ifndef COMMON_ICMP_H
+#define COMMON_ICMP_H
 
 #include <stdint.h>
 
@@ -40,4 +40,4 @@ typedef struct {
 
 uint8_t* build_icmp_packet(uint8_t type, uint8_t code, uint16_t identifier, uint16_t sequence_number, void* body, uint16_t body_length);
 
-#endif //PING_C_ICMP_H
+#endif //COMMON_ICMP_H

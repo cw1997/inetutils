@@ -2,8 +2,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#include "ping.h"
-#include "resolve.h"
+#include "../common/icmp_echo.h"
+#include "../common/resolve.h"
 
 void print_help() {
     printf("cw1997/inetutils/ping | code by cw1997 | [changwei1006@gmail.com, https://changwei.me]\n");
@@ -23,7 +23,7 @@ int main(int argc, const char* argv[]) {
         print_help();
         exit(0);
     }
-    char* name = argv[1];
+    const char* name = argv[1];
     uint32_t count = 4;
     uint16_t timeout = 1;
     uint16_t ttl = 30;
@@ -40,7 +40,6 @@ int main(int argc, const char* argv[]) {
             case 'n': // ping count
                 count = (uint16_t)atoi(optarg);
                 break;
-                //表示选项不支持
             case 'l': // size
                 length = (uint16_t)atoi(optarg);
                 break;

@@ -2,8 +2,8 @@
 // Created by cw1997 on 2021/5/10.
 //
 
-#ifndef PING_C_IP_H
-#define PING_C_IP_H
+#ifndef COMMON_IP_H
+#define COMMON_IP_H
 
 #include <stdint.h>
 #include <arpa/inet.h>
@@ -22,4 +22,4 @@ typedef struct {
     struct in_addr destination;
 } ip_header_t;
 
-#endif //PING_C_IP_H
+#endif //COMMON_IP_H
