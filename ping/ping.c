@@ -111,7 +111,7 @@ int ping(const char *host, const uint32_t count, uint32_t timeout, const uint16_
     }
 
     if (ttl > 0) {
-        ret = setsockopt(sock, IPPROTO_IP,IP_TTL, (char *)&ttl, sizeof(ttl));
+        ret = setsockopt(sock, IPPROTO_IP,IP_TTL, &ttl, sizeof(ttl));
         if (ret == -1) {
             perror("set socket TTL option error.\n");
             return -1;
