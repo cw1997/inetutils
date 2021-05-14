@@ -33,7 +33,7 @@ int send_echo_request(const int sock, const struct sockaddr_in* addr, const uint
     return length;
 }
 
-int recv_echo_reply(const int sock, const int identifier, const char* host) {
+int recv_echo_reply(const int sock, const int identifier, const char* ip, const char* name) {
     char buffer[MTU_LENGTH];
     struct sockaddr_in peer_addr;
 
@@ -67,20 +67,19 @@ int recv_echo_reply(const int sock, const int identifier, const char* host) {
     char* address = inet_ntoa(in_address);
     uint16_t sequence_number = ntohs(icmp_header->sequence_number);
     uint16_t ttl = ip_header->ttl;
-    printf("%d bytes from %s (%s): icmp_seq=%d ttl=%d time=%5.3f ms\n", bytes, host, address, sequence_number, ttl, duration_ms);
+    printf("%d bytes from %s (%s): icmp_seq=%d ttl=%d time=%5.3f ms\n", bytes, name, address, sequence_number, ttl, duration_ms);
 
     return 0;
 }
 
-int ping(const char *host, const uint32_t count, uint32_t timeout, const uint16_t ttl, uint16_t body_length) {
-    char* address = host;
-    printf("PING %s (%s) %d bytes of data.\n", host, address, 64);
+int ping(const char *ip, const char *name, uint32_t count, uint32_t timeout, uint16_t ttl, uint16_t body_length) {
+    printf("PING %s (%s) %d bytes of data.\n", name, ip, 64);
 
     struct sockaddr_in addr;
     bzero(&addr, sizeof(addr));
     addr.sin_family = AF_INET;
     addr.sin_port = 0;
-    if (inet_aton(host, (struct in_addr*)&addr.sin_addr.s_addr) == 0) {
+    if (inet_aton(ip, (struct in_addr*)&addr.sin_addr.s_addr) == 0) {
         return -1;
     }
 
@@ -131,7 +130,7 @@ int ping(const char *host, const uint32_t count, uint32_t timeout, const uint16_
 //            continue;
         }
 
-        ret = recv_echo_reply(sock, identifier, host);
+        ret = recv_echo_reply(sock, identifier, ip, name);
         if (ret == -1) {
             perror("receive failed.\n");
         }
