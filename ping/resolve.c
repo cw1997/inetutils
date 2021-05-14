@@ -10,21 +10,20 @@
 
 #include "resolve.h"
 
+char* address2str(char* address) {
+    struct in_addr in;
+    struct sockaddr_in addr_in;
+    memcpy(&addr_in.sin_addr.s_addr, address, 4);
+    in.s_addr=addr_in.sin_addr.s_addr;
+    char* ip = inet_ntoa(in);
+    return ip;
+}
+
 char* get_ip_by_name(const char* name) {
     struct hostent *host = gethostbyname(name);
     if (host == NULL) {
         perror("gethostbyname error");
     }
-    printf("host->h_name: %s\n", host->h_name);
-    printf("host->h_length: %d\n", host->h_length);
-    for (int i = 0; i < host->h_length; ++i) {
-        printf("host->h_addr_list[i]: %s\n", host->h_addr_list[i]);
-    }
-//    printf("host->h_addr: %s\n", host->h_addr);
-    struct in_addr in;
-    struct sockaddr_in addr_in;
-    memcpy(&addr_in.sin_addr.s_addr, host->h_addr, 4);
-    in.s_addr=addr_in.sin_addr.s_addr;
-    char* ip = inet_ntoa(in);
+    char* ip = address2str(host->h_addr);
     return ip;
 }
