@@ -7,6 +7,7 @@
 #include <memory.h>
 
 #include "icmp.h"
+#include "utils.h"
 
 uint16_t calculate_checksum(uint8_t* buffer, int length) {
     uint32_t checksum = 0;
@@ -40,7 +41,7 @@ uint16_t calculate_checksum(uint8_t* buffer, int length) {
 
 uint8_t* build_icmp_packet(uint8_t type, uint8_t code, uint16_t identifier, uint16_t sequence_number, void* body,
                            uint16_t body_length) {
-    uint16_t buffer_length = sizeof(icmp_header_t) + body_length;
+    uint16_t buffer_length = sizeof(icmp_t) + body_length;
     void* buffer = malloc(buffer_length);
 
     icmp_header_t icmp_header;
@@ -49,10 +50,19 @@ uint8_t* build_icmp_packet(uint8_t type, uint8_t code, uint16_t identifier, uint
     icmp_header.checksum = 0;
     icmp_header.identifier = htons(identifier);
     icmp_header.sequence_number = htons(sequence_number);
-//    TODO: improving performance: reduce memcpy count
-    memcpy(buffer, &icmp_header, sizeof(icmp_header_t));
-    memcpy(buffer + sizeof(icmp_header_t), body, body_length);
 
+    icmp_body_t icmp_body;
+    icmp_body.timeval = get_timeval();
+
+    icmp_t icmp;
+    icmp.icmp_header = icmp_header;
+    icmp.icmp_body = icmp_body;
+
+//    TODO: improving performance: reduce memcpy count
+    memcpy(buffer, &icmp, sizeof(icmp));
+    memcpy(buffer + sizeof(icmp), body, body_length);
+
+//    TODO: improving performance: only need to copy checksum field
     icmp_header.checksum = htons(calculate_checksum(buffer, buffer_length));
     memcpy(buffer, &icmp_header, sizeof(icmp_header_t));
 

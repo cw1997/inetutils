@@ -6,6 +6,7 @@
 #define COMMON_ICMP_H
 
 #include <stdint.h>
+#include <netinet/ip_icmp.h>
 
 #define Network_Unreachable  0 // （無法到達目的網路）
 #define Host_Unreachable  1 // （無法到達目的主機）
@@ -32,6 +33,15 @@ typedef struct {
     uint16_t identifier;
     uint16_t sequence_number;
 } icmp_header_t;
+
+typedef struct {
+    struct timeval timeval;
+} icmp_body_t;
+
+typedef struct {
+    icmp_header_t icmp_header;
+    icmp_body_t icmp_body;
+} icmp_t;
 
 //typedef struct {
 //    icmp_header_t header;
