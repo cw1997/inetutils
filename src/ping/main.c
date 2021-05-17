@@ -12,58 +12,6 @@
 #include "../common/resolve.h"
 
 
-void hex_dump(char *description, void *address, uint32_t length) {
-    uint32_t index;
-    uint8_t buff[17];
-    uint8_t *pc = (uint8_t *)address;
-
-    // Output description if given.
-    if (description != NULL)
-        printf("%s:\n", description);
-
-    // Process every byte in the data.
-    for (index = 0; index < length; index++) {
-//        if ((index % 4) == 0) {
-//            if (index != 0) {
-//                printf("  ");
-//            }
-//        }
-
-        // Multiple of 16 means new line (with line offset).
-        if ((index % 16) == 0) {
-            // Just don't print ASCII for the zeroth line.
-            if (index != 0) {
-                printf("  %s\n", buff);
-            }
-
-            // Output the offset.
-            printf("  0x%04x  ", index);
-        }
-
-        // Now the hex code for the specific character.
-        printf(" %02x", pc[index]);
-
-        // And store a printable ASCII character for later.
-        if ((pc[index] < 0x20) || (pc[index] > 0x7e)) {
-            buff[index % 16] = '.';
-        } else {
-            buff[index % 16] = pc[index];
-        }
-
-        buff[(index % 16) + 1] = '\0';
-    }
-
-    // Pad out last line if not exactly 16 characters.
-    while ((index % 16) != 0) {
-        printf("   ");
-        index++;
-    }
-
-    // And print the final ASCII bit.
-    printf("  %s\n", buff);
-}
-
-
 int ping(const char *ip, const char *name, uint32_t count, uint32_t timeout, uint16_t ttl, uint16_t body_length) {
     printf("PING %s (%s) %hu(%lu) bytes of data.\n", name, ip, body_length, body_length + sizeof(struct iphdr) + sizeof(icmp_header_t));
 
@@ -131,8 +79,6 @@ int ping(const char *ip, const char *name, uint32_t count, uint32_t timeout, uin
             perror("receive failed.\n");
         }
         int length = ret;
-
-//        hex_dump("recv_echo_reply buffer", buffer, MTU_LENGTH);
 
         struct iphdr* ip_header = (struct iphdr *)(buffer);
         struct icmphdr* icmp_header = (struct icmphdr *)(buffer + sizeof(struct iphdr));
