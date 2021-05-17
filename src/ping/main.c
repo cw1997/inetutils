@@ -13,16 +13,16 @@
 #include "../common/ip.h"
 
 
-int ping(const char *ip, const char *name, uint32_t count, uint32_t timeout, uint16_t ttl, uint16_t body_length) {
-    printf("PING %s (%s) %hu(%lu) bytes of data.\n", name, ip, body_length, body_length + sizeof(struct iphdr) + sizeof(icmp_header_t));
+int ping(uint32_t ip_uint32, uint32_t count, uint32_t timeout, uint16_t ttl, uint16_t body_length) {
+    char* ip_dot_split = ipv4_uint32_to_dot_split(ip_uint32);
+    char* name = get_name_by_ip(ip_uint32);
+    printf("PING %s (%s) %hu(%lu) bytes of data.\n", name, ip_dot_split, body_length, body_length + sizeof(struct iphdr) + sizeof(icmp_header_t));
 
     struct sockaddr_in addr;
     bzero(&addr, sizeof(addr));
     addr.sin_family = AF_INET;
     addr.sin_port = 0;
-    if (inet_aton(ip, (struct in_addr*)&addr.sin_addr.s_addr) == 0) {
-        return -1;
-    }
+    addr.sin_addr.s_addr = ip_uint32;
 
     struct protoent *protocol;
     if ((protocol = getprotobyname("icmp")) == NULL) {
@@ -93,10 +93,11 @@ int ping(const char *ip, const char *name, uint32_t count, uint32_t timeout, uin
         uint16_t bytes = length - sizeof(struct iphdr) - sizeof(icmp_t);
         double duration_ms = (double)(now_timestamp_us - last_timestamp_us) / 1000;
 //    printf("duration %f, now_timestamp_us %lu, last_timestamp_us %lu \n", duration_ms, now_timestamp_us, last_timestamp_us);
-        char* address = ipv4_uint32_to_dot_split(ip_header->saddr);
+        char* ret_ip = ipv4_uint32_to_dot_split(ip_header->saddr);
+        char* ret_name = get_name_by_ip(ip_header->saddr);
         uint16_t ret_sequence_number = ntohs(icmp_header->un.echo.sequence);
         uint8_t ret_ttl = ip_header->ttl;
-        printf("%d bytes from %s (%s): icmp_seq=%d ttl=%d time=%5.3f ms\n", bytes, name, address, ret_sequence_number, ret_ttl, duration_ms);
+        printf("%d bytes from %s (%s): icmp_seq=%d ttl=%d time=%5.3f ms\n", bytes, ret_name, ret_ip, ret_sequence_number, ret_ttl, duration_ms);
 
         if (sequence_number <= count) {
             sleep(1);
@@ -159,7 +160,6 @@ int main(int argc, const char* argv[]) {
         }
     }
 
-    char* ip = get_ip_by_name(name);
-//    printf("ip: %s\n", ip);
-    return ping(ip, name, count, timeout, ttl, length);
+    uint32_t ip_uint32 = get_ip_by_name(name);
+    return ping(ip_uint32, count, timeout, ttl, length);
 }

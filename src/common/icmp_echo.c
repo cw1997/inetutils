@@ -24,7 +24,6 @@ int recv_echo_reply(const int sock, char* buffer, uint16_t buffer_length) {
 
     socklen_t addr_len = sizeof(peer_addr);
     int length = recvfrom(sock, buffer, buffer_length, 0, (struct sockaddr *)&peer_addr, &addr_len);
-    uint64_t now_timestamp_us = get_timestamp_us();
     if (length == -1) {
         perror("timeout.\n");
         if (errno == EAGAIN || errno == EWOULDBLOCK) {

@@ -16,4 +16,4 @@ set(CMAKE_INSTALL_RPATH $ORIGIN)
 
 add_subdirectory(src/common)
 add_subdirectory(src/ping)
-#add_subdirectory(src/traceroute)
+add_subdirectory(src/traceroute)
