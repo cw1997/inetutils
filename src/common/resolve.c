@@ -10,7 +10,7 @@
 
 #include "resolve.h"
 
-char* ipv4_uint32_to_dot_split(char* address) {
+char* host_addr_to_str_addr(char* address) {
     struct in_addr in;
     struct sockaddr_in addr_in;
     memcpy(&addr_in.sin_addr.s_addr, address, 4);
@@ -24,6 +24,6 @@ char* get_ip_by_name(const char* name) {
     if (host == NULL) {
         printf("gethostbyname error.\n");
     }
-    char* ip = ipv4_uint32_to_dot_split(host->h_addr);
+    char* ip = host_addr_to_str_addr(host->h_addr);
     return ip;
 }
