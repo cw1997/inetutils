@@ -10,6 +10,7 @@
 #include "../common/icmp.h"
 #include "../common/icmp_echo.h"
 #include "../common/resolve.h"
+#include "../common/ip.h"
 
 
 int ping(const char *ip, const char *name, uint32_t count, uint32_t timeout, uint16_t ttl, uint16_t body_length) {
@@ -92,9 +93,7 @@ int ping(const char *ip, const char *name, uint32_t count, uint32_t timeout, uin
         uint16_t bytes = length - sizeof(struct iphdr) - sizeof(icmp_t);
         double duration_ms = (double)(now_timestamp_us - last_timestamp_us) / 1000;
 //    printf("duration %f, now_timestamp_us %lu, last_timestamp_us %lu \n", duration_ms, now_timestamp_us, last_timestamp_us);
-        struct in_addr in_address;
-        in_address.s_addr = ip_header->saddr;
-        char* address = inet_ntoa(in_address);
+        char* address = ipv4_uint32_to_dot_split(ip_header->saddr);
         uint16_t ret_sequence_number = ntohs(icmp_header->un.echo.sequence);
         uint8_t ret_ttl = ip_header->ttl;
         printf("%d bytes from %s (%s): icmp_seq=%d ttl=%d time=%5.3f ms\n", bytes, name, address, ret_sequence_number, ret_ttl, duration_ms);

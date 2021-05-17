@@ -22,4 +22,6 @@ typedef struct {
     struct in_addr destination;
 } ip_header_t;
 
+char* ipv4_uint32_to_dot_split(uint32_t int_ip);
+
 #endif //COMMON_IP_H
