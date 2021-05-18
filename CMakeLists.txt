@@ -1,9 +1,10 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.17)
 project(inetutils VERSION 1.0 LANGUAGES C HOMEPAGE_URL https://github.com/cw1997/inetutils)
 
 set(CMAKE_C_STANDARD 11)
 
-SET(output_path ../../bin)
+SET(output_path ../../../bin)
+set(link_libraries PUBLIC ip utils resolve icmp_echo icmp)
 
 SET(EXECUTABLE_OUTPUT_PATH ${output_path})
 SET(LIBRARY_OUTPUT_PATH ${output_path})

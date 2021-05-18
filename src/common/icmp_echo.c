@@ -5,17 +5,16 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <stdio.h>
+#include <malloc.h>
 
 #include "icmp_echo.h"
-
-#include "ip.h"
 #include "icmp.h"
-#include "utils.h"
 
 int send_echo_request(const int sock, const struct sockaddr_in* addr, const uint16_t identifier, const uint16_t sequence_number, void* body, uint16_t body_length) {
-    uint8_t* icmp_packet = build_icmp_packet(ICMP_TYPE_ECHO_REQUEST, 0, identifier, sequence_number, body, body_length);
-    uint16_t packet_length = sizeof(icmp_t) + body_length;
-    int length = sendto(sock, icmp_packet, packet_length, 0, (struct sockaddr *)addr, sizeof(*addr));
+    uint16_t buffer_length = sizeof(icmp_t) + body_length;
+    void* buffer = malloc(buffer_length);
+    uint8_t* icmp_packet = build_icmp_packet(buffer, buffer_length, ICMP_TYPE_ECHO_REQUEST, 0, identifier, sequence_number, body, body_length);
+    int length = sendto(sock, icmp_packet, buffer_length, 0, (struct sockaddr *)addr, sizeof(*addr));
     return length;
 }
 

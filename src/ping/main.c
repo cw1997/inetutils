@@ -7,6 +7,7 @@
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
 
+#include "../common/utils.h"
 #include "../common/icmp.h"
 #include "../common/icmp_echo.h"
 #include "../common/resolve.h"
