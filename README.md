@@ -1,4 +1,6 @@
 # inetutils
+[![CMake](https://github.com/cw1997/inetutils/actions/workflows/cmake.yml/badge.svg)](https://github.com/cw1997/inetutils/actions/workflows/cmake.yml)
+
 Some network utils including 'ping' and 'traceroute'
 
 # build
