@@ -12,3 +12,7 @@ _deps
 
 build
 cmake-build-debug
+bin
+lib
+
+.idea
