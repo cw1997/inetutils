@@ -22,7 +22,7 @@ Finally you can see two new directories that name is `bin` and `build`
 
     cd ./bin
     sudo ./ping
-    sudo ./teaceroute
+    sudo ./traceroute
     
 # documentation
 For more information about usage, you can see the `./doc/documentation.docx`
